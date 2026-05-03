@@ -42,7 +42,7 @@ Lessons can be written as **Markdown** (recommended) or **JS modules**.
 
 ### Markdown (recommended)
 
-```md
+````md
 ---
 id: hello-world
 title: Hello World
@@ -54,9 +54,9 @@ Python's `print()` function outputs text to the console.
 
 ## Code
 
-\`\`\`python
+```python
 print("Hello, World!")
-\`\`\`
+```
 
 ## Exercise
 
@@ -68,11 +68,11 @@ Use an f-string.
 
 ## Solution
 
-\`\`\`python
+```python
 name = "World"
 print(f"Hello, {name}!")
-\`\`\`
 ```
+````
 
 ### JS module (alternative)
 
