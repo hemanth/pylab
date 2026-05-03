@@ -1,7 +1,7 @@
-# pylab
+# pylabs
 
-[![npm version](https://img.shields.io/npm/v/pylab.svg)](https://www.npmjs.com/package/pylab)
-[![license](https://img.shields.io/npm/l/pylab.svg)](https://github.com/hemanth/pylab/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/pylabs.svg)](https://www.npmjs.com/package/pylabs)
+[![license](https://img.shields.io/npm/l/pylabs.svg)](https://github.com/hemanth/pylab/blob/main/LICENSE)
 
 Create interactive browser-based Python codelabs from config + lesson files. Zero dependencies, zero build tools - just Node.js.
 
@@ -10,22 +10,22 @@ Powered by [Pyodide](https://pyodide.org/) (Python in WebAssembly) and [Monaco E
 ## Install
 
 ```bash
-npm install -g pylab
+npm install -g pylabs
 ```
 
 Or use directly with `npx`:
 
 ```bash
-npx pylab init my-codelab
+npx pylabs init my-codelab
 ```
 
 ## Quick start
 
 ```bash
-npx pylab init my-codelab
+npx pylabs init my-codelab
 cd my-codelab
-npx pylab build
-npx pylab serve
+npx pylabs build
+npx pylabs serve
 # → http://localhost:3000
 ```
 
@@ -33,7 +33,7 @@ npx pylab serve
 
 1. **Define lessons** as JS modules in `lessons/`
 2. **Configure** your codelab in `pylab.config.js`
-3. **Build** a static site with `pylab build`
+3. **Build** a static site with `pylabs build`
 4. **Deploy** the `dist/` folder anywhere (GitHub Pages, Netlify, Vercel, etc.)
 
 ## Lesson format
@@ -122,9 +122,9 @@ Drop `.py` files in `mocks/` to simulate your library in the browser. They're lo
 
 | Command | Description |
 |---------|-------------|
-| `pylab init [dir]` | Scaffold a new codelab project |
-| `pylab build [dir]` | Build static site to `dist/` |
-| `pylab serve [dir] [port]` | Local dev server (default: 3000) |
+| `pylabs init [dir]` | Scaffold a new codelab project |
+| `pylabs build [dir]` | Build static site to `dist/` |
+| `pylabs serve [dir] [port]` | Local dev server (default: 3000) |
 
 ## Features
 
@@ -141,7 +141,7 @@ Drop `.py` files in `mocks/` to simulate your library in the browser. They're lo
 
 ## Example
 
-[agentu codelab](https://hemanth.github.io/agentu-codelab/) was built with pylab.
+[agentu codelab](https://hemanth.github.io/agentu-codelab/) was built with pylabs.
 
 ## License
 

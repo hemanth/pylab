@@ -12,16 +12,16 @@ const TEMPLATES = join(__dirname, "..", "templates");
 const [, , command, ...args] = process.argv;
 
 const HELP = `
-  pylab - create interactive Python codelabs
+  pylabs - create interactive Python codelabs
 
   Usage:
-    pylab init [dir]     Scaffold a new codelab project
-    pylab build [dir]    Build static site from config + lessons
-    pylab serve [dir]    Serve the built site locally
+    pylabs init [dir]     Scaffold a new codelab project
+    pylabs build [dir]    Build static site from config + lessons
+    pylabs serve [dir]    Serve the built site locally
 
   Examples:
-    npx pylab init my-codelab
-    cd my-codelab && npx pylab build && npx pylab serve
+    npx pylabs init my-codelab
+    cd my-codelab && npx pylabs build && npx pylabs serve
 `;
 
 // ---------------------------------------------------------------------------
