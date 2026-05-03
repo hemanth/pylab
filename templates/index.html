@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{TITLE}} - {{SUBTITLE}}</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <meta name="description" content="{{DESCRIPTION}}" />
+  <meta property="og:title" content="{{OG_TITLE}}" />
+  <meta property="og:description" content="{{OG_DESCRIPTION}}" />
+  <meta property="og:image" content="{{OG_IMAGE}}" />
+  <meta property="og:url" content="{{OG_URL}}" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{TITLE}}" />
+  <meta name="twitter:description" content="{{OG_DESCRIPTION}}" />
+  <meta name="twitter:image" content="{{OG_IMAGE}}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Landing page -->
+  <div class="landing" id="landing">
+    <div class="landing-inner">
+      <div class="landing-header">
+        <div class="landing-badge">{{BADGE}}</div>
+        <h1 class="landing-title"><span class="gradient-text">{{TITLE}}</span></h1>
+        <p class="landing-subtitle">{{DESCRIPTION}}</p>
+      </div>
+      <code class="install-banner">{{INSTALL}}</code>
+      <div class="feature-grid">
+        {{FEATURE_CARDS}}
+      </div>
+
+      <div class="landing-cta-row">
+        <button class="landing-cta" id="start-codelab">Start learning</button>
+        <span class="landing-meta">{{LESSON_COUNT}} lessons &middot; zero setup</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading overlay -->
+  <div class="loading" id="loading" style="display:none; opacity:0;">
+    <div class="loading-inner">
+      <div class="spinner"></div>
+      <p id="loading-text">Initializing...</p>
+    </div>
+  </div>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <h1>{{TITLE}}</h1>
+    <div class="progress-wrap">
+      <span id="progress-label">0/{{LESSON_COUNT}} complete</span>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <span class="progress-pct" id="progress-pct">0%</span>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle lessons">&#9776;</button>
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+  <div class="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <div class="search-wrap">
+        <input type="text" class="search-input" id="search-input" placeholder="Search lessons…" />
+      </div>
+      <div class="sidebar-lessons" id="sidebar-lessons"></div>
+    </nav>
+
+    <!-- Main content -->
+    <main id="main">
+      <div class="content">
+        <div class="lesson-header">
+          <span class="lesson-num" id="lesson-num">Lesson 1 of {{LESSON_COUNT}}</span>
+          <h2 class="lesson-title" id="lesson-title"></h2>
+        </div>
+        <div class="lesson-desc" id="lesson-desc"></div>
+
+        <!-- Editor -->
+        <div class="editor-section">
+          <div class="editor-toolbar">
+            <span id="editor-status">Ctrl + Enter to run</span>
+            <div class="editor-actions">
+              <button class="btn btn-run" id="btn-run" disabled>Run</button>
+              <button class="btn btn-ghost" id="btn-reset">Reset</button>
+              <button class="btn btn-ghost" id="btn-solution">Show solution</button>
+            </div>
+          </div>
+          <div id="editor-container" style="height:260px;"></div>
+        </div>
+
+        <!-- Output -->
+        <div class="output-section">
+          <div class="output-header">
+            <span>Output</span>
+            <span class="output-status" id="output-status"></span>
+          </div>
+          <pre class="output" id="output"><span class="output-empty">Hit Run or Ctrl+Enter to execute</span></pre>
+        </div>
+
+        <!-- Exercise -->
+        <div class="exercise-section">
+          <div class="exercise-text" id="exercise-text"></div>
+          <button class="hint-toggle" id="hint-toggle">Show hint</button>
+          <div class="hint-text" id="hint-text"></div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="lesson-nav">
+          <button class="btn btn-ghost" id="btn-prev" disabled>&larr; Previous</button>
+          <button class="btn btn-primary" id="btn-next">Next &rarr;</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Congratulations overlay -->
+  <div class="congrats-overlay hidden" id="congrats-overlay">
+    <div class="congrats-card">
+      <div class="congrats-icon">🎉</div>
+      <h2 class="congrats-title">{{CONGRATS_TITLE}}</h2>
+      <p class="congrats-subtitle">{{CONGRATS_SUBTITLE}}</p>
+      <div class="congrats-stats">
+        {{CONGRATS_STATS}}
+      </div>
+      <button class="landing-cta" id="congrats-restart">Start over</button>
+    </div>
+  </div>
+
+  <!-- Runtime config -->
+  <script>window.__PYLAB_CONFIG__ = {{RUNTIME_CONFIG}};</script>
+
+  <!-- Pyodide -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.27.5/full/pyodide.js"></script>
+  <!-- Monaco loader -->
+  <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js"></script>
+  <!-- App -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
