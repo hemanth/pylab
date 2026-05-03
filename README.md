@@ -38,7 +38,43 @@ npx pylab serve
 
 ## Lesson format
 
-Each lesson is a JS file exporting a default object:
+Lessons can be written as **Markdown** (recommended) or **JS modules**.
+
+### Markdown (recommended)
+
+```md
+---
+id: hello-world
+title: Hello World
+---
+
+Write your first Python program.
+
+Python's `print()` function outputs text to the console.
+
+## Code
+
+\`\`\`python
+print("Hello, World!")
+\`\`\`
+
+## Exercise
+
+**Exercise:** Print your name.
+
+## Hint
+
+Use an f-string.
+
+## Solution
+
+\`\`\`python
+name = "World"
+print(f"Hello, {name}!")
+\`\`\`
+```
+
+### JS module (alternative)
 
 ```js
 // lessons/01-hello-world.js
@@ -52,8 +88,6 @@ export default {
   solution: `name = "World"\nprint(f"Hello, {name}!")`,
 };
 ```
-
-Files are auto-sorted by filename prefix (`01-`, `02-`, etc.).
 
 ## Config
 

@@ -46,6 +46,81 @@ function copyDir(src, dest) {
 }
 
 // ---------------------------------------------------------------------------
+// Markdown lesson parser
+// ---------------------------------------------------------------------------
+
+function parseMarkdownLesson(content, filename) {
+  // Parse YAML frontmatter
+  const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (!fmMatch) {
+    console.error(`  ✗ ${filename}: missing YAML frontmatter (---)`);  
+    return null;
+  }
+
+  const frontmatter = {};
+  for (const line of fmMatch[1].split("\n")) {
+    const colonIdx = line.indexOf(":");
+    if (colonIdx > 0) {
+      const key = line.slice(0, colonIdx).trim();
+      let val = line.slice(colonIdx + 1).trim();
+      // Strip surrounding quotes
+      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+        val = val.slice(1, -1);
+      }
+      frontmatter[key] = val;
+    }
+  }
+
+  const body = fmMatch[2];
+
+  // Split body by ## headings
+  const sections = {};
+  let currentKey = "description";
+  let currentLines = [];
+
+  for (const line of body.split("\n")) {
+    const headingMatch = line.match(/^##\s+(.+)$/);
+    if (headingMatch) {
+      // Save previous section
+      sections[currentKey] = currentLines.join("\n").trim();
+      currentLines = [];
+      // Map heading to section key
+      const heading = headingMatch[1].toLowerCase().trim();
+      if (heading === "code" || heading === "starter" || heading === "starter code") {
+        currentKey = "starterCode";
+      } else if (heading === "exercise") {
+        currentKey = "exercise";
+      } else if (heading === "hint") {
+        currentKey = "hint";
+      } else if (heading === "solution") {
+        currentKey = "solution";
+      } else {
+        currentKey = heading;
+      }
+    } else {
+      currentLines.push(line);
+    }
+  }
+  sections[currentKey] = currentLines.join("\n").trim();
+
+  // Extract code from fenced blocks for starterCode and solution
+  function extractCode(text) {
+    const codeMatch = text.match(/```(?:\w*)?\n([\s\S]*?)```/);
+    return codeMatch ? codeMatch[1].trim() : text;
+  }
+
+  return {
+    id: frontmatter.id || slugify(frontmatter.title || basename(filename, ".md")),
+    title: frontmatter.title || basename(filename, ".md"),
+    description: sections.description || "",
+    starterCode: extractCode(sections.starterCode || ""),
+    exercise: sections.exercise || "",
+    hint: sections.hint || "",
+    solution: extractCode(sections.solution || ""),
+  };
+}
+
+// ---------------------------------------------------------------------------
 // INIT
 // ---------------------------------------------------------------------------
 
@@ -76,30 +151,43 @@ function cmdInit(targetDir) {
 `
   );
 
-  // Example lesson
+  // Example lesson (markdown)
   writeFileSync(
-    join(dir, "lessons", "01-hello-world.js"),
-    `export default {
-  id: "hello-world",
-  title: "Hello World",
-  description: \`
+    join(dir, "lessons", "01-hello-world.md"),
+    `---
+id: hello-world
+title: Hello World
+---
+
 Write your first Python program.
 
-Python's \\\`print()\\\` function outputs text to the console.
-  \`.trim(),
-  starterCode: \`# Welcome to Python!
+Python's \`print()\` function outputs text to the console.
+
+## Code
+
+\`\`\`python
+# Welcome to Python!
 print("Hello, World!")
 
 name = "Codelab"
 print(f"Welcome to {name}!")
-\`,
-  exercise: "**Exercise:** Create a variable called \\\`greeting\\\` and print it with your name.",
-  hint: "Use an f-string: \\\`f\\\"{greeting}, {name}!\\\"\\\`",
-  solution: \`greeting = "Hello"
+\`\`\`
+
+## Exercise
+
+**Exercise:** Create a variable called \`greeting\` and print it with your name.
+
+## Hint
+
+Use an f-string: \`f"{greeting}, {name}!"\`
+
+## Solution
+
+\`\`\`python
+greeting = "Hello"
 name = "World"
 print(f"{greeting}, {name}!")
-\`,
-};
+\`\`\`
 `
   );
 
@@ -130,16 +218,22 @@ async function cmdBuild(targetDir) {
 
   console.log(`Building "${config.title}"...`);
 
-  // 1. Collect lessons
+  // 1. Collect lessons (.js and .md)
   const lessonsDir = join(dir, "lessons");
   const lessonFiles = readdirSync(lessonsDir)
-    .filter((f) => f.endsWith(".js"))
+    .filter((f) => f.endsWith(".js") || f.endsWith(".md"))
     .sort();
 
   const lessons = [];
   for (const file of lessonFiles) {
-    const mod = await import(join(lessonsDir, file));
-    lessons.push(mod.default);
+    if (file.endsWith(".md")) {
+      const content = readFileSync(join(lessonsDir, file), "utf-8");
+      const lesson = parseMarkdownLesson(content, file);
+      if (lesson) lessons.push(lesson);
+    } else {
+      const mod = await import(join(lessonsDir, file));
+      lessons.push(mod.default);
+    }
   }
 
   console.log(`  Found ${lessons.length} lessons`);
