@@ -4,7 +4,7 @@
   "description": "Create interactive browser-based Python codelabs from config + lesson files",
   "type": "module",
   "bin": {
-    "pylab": "./bin/pylab.js"
+    "pylab": "bin/pylab.js"
   },
   "files": [
     "bin/",
