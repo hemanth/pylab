@@ -1,6 +1,6 @@
 {
   "name": "pylabs",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Create interactive browser-based Python codelabs from config + lesson files",
   "type": "module",
   "bin": {
